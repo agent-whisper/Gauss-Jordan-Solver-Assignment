@@ -1,0 +1,70 @@
+
+=================================================================
+PENTING PENTING PENTING
+=================================================================
+Find more about Singleton design pattern: http://www.oodesign.com/singleton-pattern.html
+
+CARA PAKAI KELAS OBE
+	OBE.getInstance().swapRow(Matrix, 2, 3)
+
+ | | | |
+ V V V V
+Di penulisan algoritma, hitungan baris dan kolom DIMULAI DARI 0, tapi dalam menggunakannya hitungan DIMULAI DARI 1
+ ^ ^ ^ ^
+ | | | |
+
+ jadi swapRow(matrix,2,3) akan menukar baris ke-1 dan ke-2
+	 alasan: aku ga tau kok kepikiran jadi gini, harusnya g ada masalah sih mager ngubah balik wkwkwk.
+==================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+Kelas Matrix
+	Konstruktor
+		public Matrix(String fileDir)
+		public Matrix(int row, int col)
+		public Matrix()
+
+	member variables:
+		private double[][] element
+		private final int row
+		private final int col
+		private Scanner input
+
+	methods:
+
+		Setter Getter
+			public double getElement(int row, int col)
+			public int getRow();
+			public int getCol();
+			public void setElement(int row, int col, double val)
+
+		Utilities
+			public void fill()
+				"Isi matriks dari (0,0) sampai (m,n). BELUM ADA PENCEGAHAN SALAH INPUT"
+			public void save(String fileDir)
+			public String toString()
+
+===================================================================
+
+Kelas OBE (Singleton)
+	Konstruktor
+		private OBE()
+
+	member variables:
+		private static OBE instance
+
+	methods
+		public static synchronized OBE getInstance()
+		public void swapRow(Matrix mx, int row1, int row2)
+		public multiplyRow(Matrix mx, int row1, double k)
+		public substractRow(Matrix mx, int rowTgt, int rowSrc, double k)

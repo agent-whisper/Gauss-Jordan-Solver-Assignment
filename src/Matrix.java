@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.text.NumberFormat;
 import java.io.*;
 
 public class Matrix {
@@ -19,9 +20,9 @@ public class Matrix {
             Scanner scanner = new Scanner(countLine);
 
             while (scanner.hasNext()) {
-                if (scanner.hasNextInt()) {
+                if (scanner.hasNextDouble()) {
                     countCol++;
-                    scanner.nextInt();
+                    scanner.nextDouble();
                 }
             }
 
@@ -37,7 +38,7 @@ public class Matrix {
 
         this.row = countRow;
         this.col = countCol;
-        element = new int[this.row][this.col];
+        element = new double[this.row][this.col];
 
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
@@ -52,8 +53,8 @@ public class Matrix {
                 Scanner scanner = new Scanner(line);
                 currCol = 0;
                 while (scanner.hasNext() && (currCol <= this.col)) {
-                    if (scanner.hasNextInt()) {
-                        element[currRow][currCol] = scanner.nextInt();
+                    if (scanner.hasNextDouble()) {
+                        element[currRow][currCol] = scanner.nextDouble();
                         currCol++;
                     }
                 }
@@ -70,7 +71,7 @@ public class Matrix {
     public Matrix(int row, int col) {
         this.row = row;
         this.col = col;
-        element = new int[row][col];
+        element = new double[row][col];
 
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
@@ -82,7 +83,7 @@ public class Matrix {
     public Matrix() {
         this.row = 5;
         this.col = 5;
-        element = new int[row][col];
+        element = new double[row][col];
 
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
@@ -92,11 +93,11 @@ public class Matrix {
     }
 
     //Getter Setter
-    public int getElement(int row, int col){
+    public double getElement(int row, int col){
         return (element[row][col]);
     }
 
-    public void setElement(int row, int col, int val){
+    public void setElement(int row, int col, double val){
         (element[row][col]) = val;
     }
 
@@ -112,8 +113,8 @@ public class Matrix {
     public void fill() {
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
-                System.out.format("Element (%d, %d): ", i + 1, j + 1);
-                setElement(i, j, input.nextInt());
+                System.out.format("Element (%.2f, %.2f): ", i + 1, j + 1);
+                setElement(i, j, input.nextDouble());
             }
         }
     }
@@ -126,7 +127,7 @@ public class Matrix {
             
             for (int i = 0; i < this.row; i++) {
                 for (int j = 0; j < this.col; j++) {
-                    writer.write(Integer.toString(this.element[i][j]));
+                    writer.write(String.format("%.2f",this.element[i][j]));
 
                     if ((j == this.col - 1) && (i != this.row - 1))
                         writer.newLine();
@@ -142,7 +143,7 @@ public class Matrix {
     }
 
     //Variabel
-    private int[][] element;
+    private double[][] element;
     private final int row;
     private final int col;
     private Scanner input = new Scanner (System.in);
@@ -153,7 +154,7 @@ public class Matrix {
 
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
-                System.out.format("%3d", element[i][j]);
+                System.out.format("%5.2f", element[i][j]);
 
                 if (j < (col - 1)) {
                     System.out.print(" ");
@@ -167,8 +168,14 @@ public class Matrix {
     }
 
     public static void main (String[] args) {
-        Matrix mx = new Matrix(10, 10);
+        Matrix mx = new Matrix("myMatrix.txt");
+        System.out.println("Before:");
         mx.toString();
-        mx.save("myMatrix.txt");
+
+        System.out.println("After:");
+        OBE.getInstance().swapRow(mx, 3, 2);
+        mx.toString();
+
+        mx.save("myMatrix2.txt");
     }
 }
