@@ -50,7 +50,7 @@ Kelas Matrix
 
 		Utilities
 			public void fill()
-				"Isi matriks dari (0,0) sampai (m,n). BELUM ADA PENCEGAHAN SALAH INPUT"
+				"Isi matriks dari (0,0) sampai (m,n). BELUM ADA PENCEGAHAN SALAH INPUT <-- asumsi benar aja"
 			public void save(String fileDir)
 			public String toString()
 
