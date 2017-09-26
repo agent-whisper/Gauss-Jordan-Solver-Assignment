@@ -24,11 +24,21 @@ public class OBE {
 	public void multiplyRow(Matrix mx, int row1, double k) {
 		for (int i = 0; i < mx.getCol(); i++) {
 			mx.setElement(row1 - 1, i, mx.getElement(row1 - 1, i) * k);
+		}
 	}
 
 	public void divideRow(Matrix mx, int row1, double k) {
+
+		if (k != 0){
+			for (int i = 0; i < mx.getCol(); i++) {
+				mx.setElement(row1 - 1, i, mx.getElement(row1 - 1, i) / k);
+			}
+		}
+	}
+
+	public void substractRow(Matrix mx, int rowTgt, int rowSrc) {
 		for (int i = 0; i < mx.getCol(); i++) {
-			mx.setElement(row1 - 1, i, mx.getElement(row1 - 1, i) / k);
+			mx.setElement(rowTgt - 1, i, mx.getElement(rowTgt - 1, i) - mx.getElement(rowSrc - 1, i));
 		}
 	}
 

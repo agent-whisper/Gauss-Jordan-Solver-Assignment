@@ -82,6 +82,18 @@ public class Matrix {
         }
     }
 
+    public Matrix(Matrix mx) {
+        this.col = mx.getCol();
+        this.row = mx.getRow();
+        element = new double[this.row][this.col];
+
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                element[i][j] = mx.getElement(i, j);
+            }
+        }
+    }
+
     public Matrix() {
         this.row = 5;
         this.col = 5;
