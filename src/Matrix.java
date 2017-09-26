@@ -14,21 +14,23 @@ public class Matrix {
         //Inisialisasi Matriks
         try {
             br = new BufferedReader(new FileReader(fileDir));
-            line = br.readLine();
+            int tempCol;
 
-            String countLine = line;
-            Scanner scanner = new Scanner(countLine);
-
-            while (scanner.hasNext()) {
-                if (scanner.hasNextDouble()) {
-                    countCol++;
-                    scanner.nextDouble();
-                }
-            }
-
-            while (line != null) {
+            while ((line = br.readLine()) != null) {
+                Scanner scanner = new Scanner(line);
                 countRow++;
-                line = br.readLine();
+                tempCol = 0;
+
+                while (scanner.hasNext()) {
+                    if (scanner.hasNextDouble()) {
+                        tempCol++;
+                        scanner.nextDouble();
+                    }
+                }
+
+                if (countCol < tempCol) {
+                    countCol = tempCol;
+                }
             }
 
             br.close();
@@ -168,12 +170,12 @@ public class Matrix {
     }
 
     public static void main (String[] args) {
-        Matrix mx = new Matrix("myMatrix.txt");
+        Matrix mx = new Matrix("not_found.txt");
         System.out.println("Before:");
         mx.toString();
 
         System.out.println("After:");
-        OBE.getInstance().swapRow(mx, 3, 2);
+        OBE.getInstance().divideRow(mx, 2, 4);
         mx.toString();
 
         mx.save("myMatrix2.txt");
