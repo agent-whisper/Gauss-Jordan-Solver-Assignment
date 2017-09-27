@@ -9,25 +9,6 @@ public class GJSolver {
 		return instance;
 	}
 
-	public Matrix pivot(Matrix mx) {
-		Matrix tempMatrix = new Matrix(mx);
-
-		int currRow = 0;
-
-		for (int i = 0; i < tempMatrix.getCol(); i++) {
-			for (int j = currRow + 1; j < tempMatrix.getRow(); j++) {
-
-				if (Math.abs(tempMatrix.getElement(currRow, i)) < Math.abs(tempMatrix.getElement(j, i))) {
-					OBE.getInstance().swapRow(tempMatrix, currRow + 1, j + 1);
-				}
-
-			}
-			currRow++;
-		}
-
-		return tempMatrix;
-	}
-
 	public Matrix getEchelon(Matrix mx) {
 		Matrix tempMatrix = new Matrix(mx);
 
