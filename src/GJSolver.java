@@ -17,7 +17,7 @@ public class GJSolver {
 		for (int i = 0; i < tempMatrix.getCol(); i++) {
 			for (int j = currRow + 1; j < tempMatrix.getRow(); j++) {
 
-				if (tempMatrix.getElement(currRow, i) < tempMatrix.getElement(j, i)) {
+				if (Math.abs(tempMatrix.getElement(currRow, i)) < Math.abs(tempMatrix.getElement(j, i))) {
 					OBE.getInstance().swapRow(tempMatrix, currRow + 1, j + 1);
 				}
 
@@ -29,18 +29,42 @@ public class GJSolver {
 	}
 
 	public Matrix getEchelon(Matrix mx) {
-		Matrix tempMatrix = new Matrix(pivot(mx));
+		Matrix tempMatrix = new Matrix(mx);
 
 		int leadingOne = 0;
+		int currRow = 0;
+		int currCol = 0;
 
-		while ((leadingOne < tempMatrix.getRow()) && (leadingOne < tempMatrix.getCol() - 1)) {
-			OBE.getInstance().divideRow(tempMatrix, leadingOne + 1, tempMatrix.getElement(leadingOne, leadingOne));
-
-			for (int j = leadingOne + 1; j < tempMatrix.getRow(); j++) {
-				OBE.getInstance().substractRow(tempMatrix, j + 1, leadingOne + 1, tempMatrix.getElement(j, leadingOne));
+		while ((currRow < tempMatrix.getRow() - 1) && (leadingOne < tempMatrix.getCol() - 1)) {
+			while (tempMatrix.getElement(currRow, currCol) == 0) {
+				currCol++;
 			}
 
+			for (int j = currRow + 1; j < tempMatrix.getRow(); j++) {
+				if (Math.abs(tempMatrix.getElement(currRow, currCol)) < Math.abs(tempMatrix.getElement(j, currCol))) {
+					OBE.getInstance().swapRow(tempMatrix, currRow + 1, j + 1);
+				}
+			}
+			System.out.println ("Iteration " + currRow + ", pivoting");
+			tempMatrix.toString();
+
+			currCol++;
+			
+			while (tempMatrix.getElement(leadingOne, leadingOne) == 0) {
+				leadingOne++;
+			}
+			
+			//System.out.println("Current leading element: " + tempMatrix.getElement(leadingOne, leadingOne));
+			OBE.getInstance().divideRow(tempMatrix, currRow + 1, tempMatrix.getElement(currRow, leadingOne));
+
+			for (int j = currRow + 1; j < tempMatrix.getRow(); j++) {
+				OBE.getInstance().substractRow(tempMatrix, j + 1, currRow + 1, tempMatrix.getElement(j, leadingOne));
+			}
+
+			System.out.println ("Iteration " + currRow + ", partial echelon");
+			tempMatrix.toString();
 			leadingOne++;
+			currRow++;
 		}
 
 		return tempMatrix;
@@ -54,21 +78,21 @@ public class GJSolver {
 	}
 
 	public Matrix GaussElim(Matrix mx) {
-		Matrix tempMatrix = new Matrix(pivot(mx));
+		Matrix tempMatrix = new Matrix(getEchelon(mx));
 		return tempMatrix;
 	}
 
 	public Matrix GaussJordan(Matrix mx) {
-		Matrix tempMatrix = new Matrix(pivot(mx));
+		Matrix tempMatrix = new Matrix(getReducedEchelon(mx));
 		return tempMatrix;
 	}
 
 	public static void main (String[] args) {
 		Matrix mx = new Matrix("not_found.txt");
-		System.out.println("Before:");
+		System.out.println("Original:");
 		mx.toString();
 
-		System.out.println("After:");
-		GJSolver.getInstance().getEchelon(mx).toString();
+		System.out.println("Echelon form:");
+		GJSolver.getInstance().getEchelon(mx).save("echelon.txt");
 	}
 }
