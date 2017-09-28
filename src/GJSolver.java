@@ -71,12 +71,15 @@ public class GJSolver {
 		Matrix solution = new Matrix(aMatrix.getCol() - 1, 1);
 
 		while (currRow >= 0) {
-			currCol = currRow;
-			solution.setElement(currRow, 1, (aMatrix.getElement(currRow, aMatrix.getCol() - 1)));
+			currCol = currRow + 1;
+			solution.setElement(currRow, 0, (aMatrix.getElement(currRow, aMatrix.getCol() - 1)));
 
-			while (++currCol < aMatrix.getCol() - 1) {
-				solution.setElement(currRow, 1, (aMatrix.getElement(currRow, aMatrix.getCol() - 1)));
-				solution.setElement(currRow, 1, (-1) * aMatrix.getElement(currRow, currCol) * solution.getElement(currCol, 1));
+			while (currCol < aMatrix.getCol() - 1) {
+				// solution.setElement(currRow, 0, (aMatrix.getElement(currRow, aMatrix.getCol() - 1)));
+				System.out.println("Current row: " + currRow + " Current col: " + currCol + " Current constant: " + aMatrix.getElement(currRow, currCol) + " Variable value: "+ solution.getElement(currCol, 0));
+				solution.setElement(currRow, 0, ((-1) * aMatrix.getElement(currRow, currCol) * solution.getElement(currCol, 0) + solution.getElement(currRow, 0)));
+				System.out.println("Current variable value: " + solution.getElement(currRow, 0));
+				currCol++;
 			}
 
 			currRow--;
