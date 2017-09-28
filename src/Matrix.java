@@ -123,6 +123,10 @@ public class Matrix {
         return this.col;
     }
 
+    public double[] getRowSet(int row) {
+        return this.element[row];
+    }
+
     //Methods
     public void fill() {
         for (int i = 0; i < row; i++) {
