@@ -170,20 +170,22 @@ public class GJSolver {
 		return tempMatrix;
 	}
 
-	public Matrix GaussElim(Matrix mx) {
-		Matrix tempMatrix = new Matrix(getEchelon(mx));
-
-		if (!solutionExists(tempMatrix)) {
+	private Matrix backSub(Matrix mx) {
+		if (!solutionExists(mx)) {
+			System.out.println();
 			System.out.println("Tidak ada solusi");
+			System.out.println();
 			return (new LESSolution(1));
 		}
 
-		if (!checkIfUnique(tempMatrix)) {
+		if (!checkIfUnique(mx)) {
 			LESSolution tempResult = new LESSolution(mx.getCol() - 1);
 
+			System.out.println();
 			System.out.println("Memulai multisolution procedure");
-			for (int i = 0; i < tempMatrix.getRow(); i++) {
-				tempResult.setElement(i, multiSolutionBuilder(tempMatrix.getRowSet(i)));
+			System.out.println();
+			for (int i = 0; i < mx.getRow(); i++) {
+				tempResult.setElement(i, multiSolutionBuilder(mx.getRowSet(i)));
 			}
 
 			// System.out.println("Solusi sebelum diproses: ");
@@ -224,15 +226,22 @@ public class GJSolver {
 
 			return tempResult;
 		} else {
+			System.out.println();
 			System.out.println("Memulai uniquesolution procedure");
-			return uniqueSolutionBuilder(tempMatrix);
+			System.out.println();
+			return uniqueSolutionBuilder(mx);
 
 		}
 	}
 
+	public Matrix GaussElim(Matrix mx) {
+		Matrix tempMatrix = new Matrix(getEchelon(mx));
+		return backSub(tempMatrix);		
+	}
+
 	public Matrix GaussJordan(Matrix mx) {
 		Matrix tempMatrix = new Matrix(getReducedEchelon(mx));
-		return tempMatrix;
+		return backSub(tempMatrix);
 	}
 
 	public static void main (String[] args) {
