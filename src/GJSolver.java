@@ -93,7 +93,7 @@ public class GJSolver {
 		}
 	}
 
-	private String recursiveSubs
+	private String recursiveSubs;
 
 	private Matrix uniqueSolutionBuilder(Matrix aMatrix) {
 		int currRow = aMatrix.getCol() - 2;
@@ -161,8 +161,33 @@ public class GJSolver {
 
 	private Matrix getReducedEchelon(Matrix mx) {
 		Matrix tempMatrix = new Matrix(getEchelon(mx));
-
-
+                
+                int rowPengurang = tempMatrix.getRow()-1; //row yg d jadikan pengurang (diambil row 3 dlu, krn row 3 leading one ada d paling ujung kanan).
+                int colPengurang = 0;
+                                        
+                while(rowPengurang != 0)
+                {
+                    while(tempMatrix.getElement(rowPengurang,colPengurang) != 1 && colPengurang <= tempMatrix.getCol()-2)
+                    {colPengurang++;}
+                    
+                    if(tempMatrix.getElement(rowPengurang,colPengurang) == 1)
+                    {
+                        for(int i = 0; i < rowPengurang; i++)
+                        {
+                            
+                                if(tempMatrix.getElement(i,colPengurang) != 0)
+                                {
+                                    OBE.getInstance().substractRow(tempMatrix, i+1, rowPengurang+1, tempMatrix.getElement(i,colPengurang));
+                                }
+                            
+                        }
+                    }
+                        
+                    rowPengurang--;
+                    colPengurang = 0;
+                }
+                
+                
 		return tempMatrix;
 	}
 
@@ -218,13 +243,18 @@ public class GJSolver {
 	}
 
 	public static void main (String[] args) {
-		Matrix mx = new Matrix("not_found.txt");
+		Matrix mx = new Matrix("myMatrix3.txt");
+                
+                
 		System.out.println(new LESSolution(10).getRow());
 		System.out.println("Original:" + (mx.getCol() - 1));
 		mx.toString();
 
 		System.out.println("Echelon form:");
 		System.out.println(GJSolver.getInstance().GaussElim(mx).toString());
+                
+                System.out.println("Echelon reduced form:");
+		System.out.println(GJSolver.getInstance().GaussJordan(mx).toString());
 		// System.out.println(GJSolver.getInstance().GaussElim(mx).getRow());
 		// GJSolver.getInstance().GaussElim(mx).getRow();
 		// GJSolver.getInstance().multiSolutionSubstituter(4, "(0.71)d + (0.53)c + (0.53)b");
