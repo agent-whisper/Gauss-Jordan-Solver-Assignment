@@ -8,6 +8,27 @@ import java.math.RoundingMode;
 public class GJSolver {
 	private static GJSolver instance;
 
+	private class operandPair {
+		public double coefficient;
+		public String var;
+
+		public operandPair(double coefficient, String var) {
+			this.coefficient = coefficient;
+			this.var = var;
+		}
+
+		public ArrayList<operandPair> subtitute(ArrayList<operandPair> expression) {
+			ArrayList<operandPair> result = new ArrayList<>();
+
+			for (int i = 0; i < expression.size(); i++) {
+				result.add(new operandPair(this.coefficient * expression.get(i).coefficient, expression.get(i).var));
+			}
+
+			return result;
+		}
+	}
+
+	//Fungsi inisiasi singleton
 	public static synchronized GJSolver getInstance() {
 		if (instance == null) {
 			instance = new GJSolver();
@@ -16,6 +37,7 @@ public class GJSolver {
 		return instance;
 	}
 
+	//Fungsi mengecek keberadaan solusi
 	private boolean solutionExists(Matrix mx) {
 		for (int i = 0; i < mx.getRow(); i++) {
 			int j = 0;
@@ -34,6 +56,7 @@ public class GJSolver {
 		return true;
 	}
 
+	//Cek apakah sebuah SPL unik
 	private boolean checkIfUnique(Matrix mx) {
 		if (mx.getRow() < mx.getCol() - 1) {
 			return false;
@@ -49,53 +72,117 @@ public class GJSolver {
 		return true;
 	}
 
-	public void multiSolutionSubstituter(LESSolution solution) {
-		Pattern aChar = Pattern.compile("[a-z]*");
-		Pattern anOperator = Pattern.compile("[^a-z[//+//*]]");
+	private String multiSolutionBuilder(double[] aRow) {
+		int currCol = 0;
+		String tempStr = "";
 
-		for (int rowIndex = solution.getRow() - 1; rowIndex >= 0; rowIndex--) {
-			System.out.println("Sekarang di variabel ke " + (rowIndex + 1));
-			Scanner strReader = new Scanner(solution.getElement(rowIndex));
-			Stack<String> expression = new Stack<>();
-			String buffer = "";
+		while ((aRow[currCol] == 0) && (currCol < aRow.length - 1)) {
+			currCol++;
+		}
 
-			while (strReader.hasNext()) {
-				String holder = strReader.next();
+		if ((currCol == aRow.length - 1) && (aRow[currCol] == 0)) {
+			return ("0");
+		}
 
-				Matcher charMatcher = aChar.matcher(holder);
-				Matcher opMatcher = anOperator.matcher(holder);
-
-				if (!charMatcher.matches() && !opMatcher.matches()) {
-					expression.push(holder);
-				} else {
-					if (charMatcher.matches()) {
-						System.out.println("Ketemu sebuah variabel " + holder);
-						if (((int) holder.charAt(0)) - 97 != rowIndex) {
-							System.out.println("Variabel akan disubstitusi dengan: " + solution.getElement(((int) holder.charAt(0)) - 97));
-							Scanner subsReader = new Scanner(solution.getElement(((int) holder.charAt(0)) - 97));
-							// subsReader.useDelimiter("[^a-z]");
-							// subsReader.useDelimiter("//+");
-							while (subsReader.hasNext()) {
-								String subHolder = subsReader.next();
-
-								if (aChar.matcher(subHolder).matches()) {
-									System.out.println(rowIndex + " --> " + subHolder);
-								}
-							}
-						}
-					} else {
-						if (holder == "+") {
-							
-						}
-					}
-				}
+		for (int i = aRow.length - 1; i > currCol; i--) {
+			double num = ((i < aRow.length - 1) ? (-1) : 1) * (aRow[i] / aRow[currCol]);
+			if (num != 0) {
+				tempStr = tempStr + String.format("%.2f", num) + ((i < aRow.length - 1 ) ? " " + ((char) (97 + i) + " * ") : "") + ((i > currCol + 1) ? " + ": "");
 			}
 
-			System.out.println(buffer);
-		}
+		}		
+
+		return tempStr;
 	}
 
-	private String recursiveSubs;
+	// public void multiSolutionSubstituter(LESSolution solution) {
+	// 	Pattern aChar = Pattern.compile("[a-z]*");
+	// 	Pattern anOperator = Pattern.compile("[^a-z[//+//*]]");
+
+	// 	for (int rowIndex = solution.getRow() - 1; rowIndex >= 0; rowIndex--) {
+	// 		System.out.println("Sekarang di variabel ke " + (rowIndex + 1));
+	// 		Scanner strReader = new Scanner(solution.getElement(rowIndex));
+	// 		Stack<String> expression = new Stack<>();
+	// 		String buffer = "";
+
+	// 		while (strReader.hasNext()) {
+	// 			String holder = strReader.next();
+
+	// 			Matcher charMatcher = aChar.matcher(holder);
+	// 			Matcher opMatcher = anOperator.matcher(holder);
+
+	// 			if (!charMatcher.matches() && !opMatcher.matches()) {
+	// 				expression.push(holder);
+	// 			} else {
+	// 				if (charMatcher.matches()) {
+	// 					System.out.println("Ketemu sebuah variabel " + holder);
+	// 					if (((int) holder.charAt(0)) - 97 != rowIndex) {
+	// 						System.out.println("Variabel akan disubstitusi dengan: " + solution.getElement(((int) holder.charAt(0)) - 97));
+	// 						Scanner subsReader = new Scanner(solution.getElement(((int) holder.charAt(0)) - 97));
+	// 						// subsReader.useDelimiter("[^a-z]");
+	// 						// subsReader.useDelimiter("//+");
+	// 						while (subsReader.hasNext()) {
+	// 							String subHolder = subsReader.next();
+
+	// 							if (aChar.matcher(subHolder).matches()) {
+	// 								System.out.println(rowIndex + " --> " + subHolder);
+	// 							}
+	// 						}
+	// 					}
+	// 				} else {
+	// 					if (holder == "+") {
+							
+	// 					}
+	// 				}
+	// 			}
+	// 		}
+
+	// 		System.out.println(buffer);
+	// 	}
+	// }
+
+	// public void multiSolutionSubstituter(LESSolution solution) {
+	// 	Pattern aChar = Pattern.compile("[a-z]*");
+	// 	Pattern anOperator = Pattern.compile("[^a-z[//+//*]]");
+
+	// 	for (int rowIndex = solution.getRow() - 1; rowIndex >= 0; rowIndex--) {
+	// 		Scanner strReader = new Scanner(solution.getElement(rowIndex));
+	// 		ArrayList<String> vary = new ArrayList<>();
+	// 		ArrayList<Double> constants = new ArrayList<>();
+	// 		ArrayList<String> operator = new ArrayList<>();
+	// 		String buffer = "";
+
+	// 		while (strReader.hasNext()) {
+	// 			String holder = strReader.next();
+	// 			boolean wasConst = false;
+	// 			Matcher charMatcher = aChar.matcher(holder);
+	// 			Matcher opMatcher = anOperator.matcher(holder);
+
+	// 			if (!charMatcher.matches() && !opMatcher.matches()) {
+	// 				constants.add(holder);
+	// 				wasConst = true;
+	// 			} else {
+	// 				if (charMatcher.matches()) {
+	// 					vary.add(holder);
+	// 				} else {
+	// 					if (wasConst) {
+	// 						vary.add("");
+	// 					}
+	// 					operator.add(holder);
+	// 				}
+	// 				wasConst = false;
+	// 			}
+	// 		}
+
+	// 		for (String v : vary) {
+	// 			if (((int) v.charAt(0)) - 97 != rowIndex) {
+					
+	// 			}
+	// 		}
+
+	// 		System.out.println(buffer);
+	// 	}
+	// }
 
 	private Matrix uniqueSolutionBuilder(Matrix aMatrix) {
 		int currRow = aMatrix.getCol() - 2;
@@ -208,35 +295,12 @@ public class GJSolver {
 				tempResult.setElement(i, multiSolutionBuilder(tempMatrix.getRowSet(i)));
 			}
 
-			multiSolutionSubstituter(tempResult);
+			//multiSolutionSubstituter(tempResult);
 			return tempResult;
 		} else {
 			return uniqueSolutionBuilder(tempMatrix);
 
 		}
-	}
-
-	private String multiSolutionBuilder(double[] aRow) {
-		int currCol = 0;
-		String tempStr = "";
-
-		while ((aRow[currCol] == 0) && (currCol < aRow.length - 1)) {
-			currCol++;
-		}
-
-		if ((currCol == aRow.length - 1) && (aRow[currCol] == 0)) {
-			return ("0");
-		}
-
-		for (int i = aRow.length - 1; i > currCol; i--) {
-			double num = ((i < aRow.length - 1) ? (-1) : 1) * (aRow[i] / aRow[currCol]);
-			if (num != 0) {
-				tempStr = tempStr + String.format("%.2f", num) + ((i < aRow.length - 1 ) ? " " + ((char) (97 + i) + " * ") : "") + ((i > currCol + 1) ? " + ": "");
-			}
-
-		}		
-
-		return tempStr;
 	}
 
 	public Matrix GaussJordan(Matrix mx) {
