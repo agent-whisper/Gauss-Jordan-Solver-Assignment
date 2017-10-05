@@ -3,6 +3,11 @@ import java.text.NumberFormat;
 import java.io.*;
 
 public class Matrix {
+    //Variabel
+    private double[][] element;
+    private final int row;
+    private final int col;
+    private Scanner input = new Scanner (System.in);
     
     //Konstruktor
     public Matrix(String fileDir) {
@@ -160,19 +165,13 @@ public class Matrix {
         }
     }
 
-    //Variabel
-    private double[][] element;
-    private final int row;
-    private final int col;
-    private Scanner input = new Scanner (System.in);
-
     //toString
     public String toString() {
         String tempStr = "";
 
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
-                System.out.format("%5.2f", element[i][j]);
+                System.out.format("%5.4f", element[i][j]);
 
                 if (j < (col - 1)) {
                     System.out.print(" ");

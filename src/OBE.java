@@ -1,3 +1,6 @@
+import java.math.BigDecimal; 
+import java.math.RoundingMode;
+
 public class OBE {
 	private static OBE instance;
 
@@ -38,13 +41,17 @@ public class OBE {
 
 	public void substractRow(Matrix mx, int rowTgt, int rowSrc) {
 		for (int i = 0; i < mx.getCol(); i++) {
-			mx.setElement(rowTgt - 1, i, mx.getElement(rowTgt - 1, i) - mx.getElement(rowSrc - 1, i));
+			BigDecimal holder = new BigDecimal(mx.getElement(rowTgt - 1, i) - mx.getElement(rowSrc - 1, i));
+			holder = holder.setScale(4, RoundingMode.HALF_UP);
+			mx.setElement(rowTgt - 1, i, holder.doubleValue());
 		}
 	}
 
 	public void substractRow(Matrix mx, int rowTgt, int rowSrc, double k) {
 		for (int i = 0; i < mx.getCol(); i++) {
-			mx.setElement(rowTgt - 1, i, mx.getElement(rowTgt - 1, i) - (k * mx.getElement(rowSrc - 1, i)));
+			BigDecimal holder = new BigDecimal(mx.getElement(rowTgt - 1, i) - mx.getElement(rowSrc - 1, i) * k);
+			holder = holder.setScale(4, RoundingMode.HALF_UP);
+			mx.setElement(rowTgt - 1, i, holder.doubleValue());
 		}
 	}
 }

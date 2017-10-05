@@ -1,32 +1,13 @@
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
+import java.math.BigDecimal; 
+import java.math.RoundingMode;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-        
+import java.util.Objects;
+
 public class GJSolver {
 	private static GJSolver instance;
-
-	private class operandPair {
-		public double coefficient;
-		public String var;
-
-		public operandPair(double coefficient, String var) {
-			this.coefficient = coefficient;
-			this.var = var;
-		}
-
-		public ArrayList<operandPair> subtitute(ArrayList<operandPair> expression) {
-			ArrayList<operandPair> result = new ArrayList<>();
-
-			for (int i = 0; i < expression.size(); i++) {
-				result.add(new operandPair(this.coefficient * expression.get(i).coefficient, expression.get(i).var));
-			}
-
-			return result;
-		}
-	}
 
 	//Fungsi inisiasi singleton
 	public static synchronized GJSolver getInstance() {
@@ -72,117 +53,29 @@ public class GJSolver {
 		return true;
 	}
 
-	private String multiSolutionBuilder(double[] aRow) {
+	private ArrayList<OperandPair> multiSolutionBuilder(double[] aRow) {
 		int currCol = 0;
-		String tempStr = "";
+		ArrayList<OperandPair> result = new ArrayList<>();
 
 		while ((aRow[currCol] == 0) && (currCol < aRow.length - 1)) {
 			currCol++;
 		}
 
-		if ((currCol == aRow.length - 1) && (aRow[currCol] == 0)) {
-			return ("0");
-		}
+		// if ((currCol == aRow.length - 1) && (aRow[currCol] == 0)) {
+		// 	return ("0");
+		// }
 
 		for (int i = aRow.length - 1; i > currCol; i--) {
 			double num = ((i < aRow.length - 1) ? (-1) : 1) * (aRow[i] / aRow[currCol]);
 			if (num != 0) {
-				tempStr = tempStr + String.format("%.2f", num) + ((i < aRow.length - 1 ) ? " " + ((char) (97 + i) + " * ") : "") + ((i > currCol + 1) ? " + ": "");
+				result.add(new OperandPair(num, ((i < aRow.length - 1 ) ? "" + ((char) (97 + i) + " ") : "")));
+				//tempStr = tempStr + String.format("%.2f", num) + ((i < aRow.length - 1 ) ? " " + ((char) (97 + i) + " * ") : "") + ((i > currCol + 1) ? " + ": "");
 			}
 
 		}		
 
-		return tempStr;
+		return result;
 	}
-
-	// public void multiSolutionSubstituter(LESSolution solution) {
-	// 	Pattern aChar = Pattern.compile("[a-z]*");
-	// 	Pattern anOperator = Pattern.compile("[^a-z[//+//*]]");
-
-	// 	for (int rowIndex = solution.getRow() - 1; rowIndex >= 0; rowIndex--) {
-	// 		System.out.println("Sekarang di variabel ke " + (rowIndex + 1));
-	// 		Scanner strReader = new Scanner(solution.getElement(rowIndex));
-	// 		Stack<String> expression = new Stack<>();
-	// 		String buffer = "";
-
-	// 		while (strReader.hasNext()) {
-	// 			String holder = strReader.next();
-
-	// 			Matcher charMatcher = aChar.matcher(holder);
-	// 			Matcher opMatcher = anOperator.matcher(holder);
-
-	// 			if (!charMatcher.matches() && !opMatcher.matches()) {
-	// 				expression.push(holder);
-	// 			} else {
-	// 				if (charMatcher.matches()) {
-	// 					System.out.println("Ketemu sebuah variabel " + holder);
-	// 					if (((int) holder.charAt(0)) - 97 != rowIndex) {
-	// 						System.out.println("Variabel akan disubstitusi dengan: " + solution.getElement(((int) holder.charAt(0)) - 97));
-	// 						Scanner subsReader = new Scanner(solution.getElement(((int) holder.charAt(0)) - 97));
-	// 						// subsReader.useDelimiter("[^a-z]");
-	// 						// subsReader.useDelimiter("//+");
-	// 						while (subsReader.hasNext()) {
-	// 							String subHolder = subsReader.next();
-
-	// 							if (aChar.matcher(subHolder).matches()) {
-	// 								System.out.println(rowIndex + " --> " + subHolder);
-	// 							}
-	// 						}
-	// 					}
-	// 				} else {
-	// 					if (holder == "+") {
-							
-	// 					}
-	// 				}
-	// 			}
-	// 		}
-
-	// 		System.out.println(buffer);
-	// 	}
-	// }
-
-	// public void multiSolutionSubstituter(LESSolution solution) {
-	// 	Pattern aChar = Pattern.compile("[a-z]*");
-	// 	Pattern anOperator = Pattern.compile("[^a-z[//+//*]]");
-
-	// 	for (int rowIndex = solution.getRow() - 1; rowIndex >= 0; rowIndex--) {
-	// 		Scanner strReader = new Scanner(solution.getElement(rowIndex));
-	// 		ArrayList<String> vary = new ArrayList<>();
-	// 		ArrayList<Double> constants = new ArrayList<>();
-	// 		ArrayList<String> operator = new ArrayList<>();
-	// 		String buffer = "";
-
-	// 		while (strReader.hasNext()) {
-	// 			String holder = strReader.next();
-	// 			boolean wasConst = false;
-	// 			Matcher charMatcher = aChar.matcher(holder);
-	// 			Matcher opMatcher = anOperator.matcher(holder);
-
-	// 			if (!charMatcher.matches() && !opMatcher.matches()) {
-	// 				constants.add(holder);
-	// 				wasConst = true;
-	// 			} else {
-	// 				if (charMatcher.matches()) {
-	// 					vary.add(holder);
-	// 				} else {
-	// 					if (wasConst) {
-	// 						vary.add("");
-	// 					}
-	// 					operator.add(holder);
-	// 				}
-	// 				wasConst = false;
-	// 			}
-	// 		}
-
-	// 		for (String v : vary) {
-	// 			if (((int) v.charAt(0)) - 97 != rowIndex) {
-					
-	// 			}
-	// 		}
-
-	// 		System.out.println(buffer);
-	// 	}
-	// }
 
 	private Matrix uniqueSolutionBuilder(Matrix aMatrix) {
 		int currRow = aMatrix.getCol() - 2;
@@ -194,10 +87,9 @@ public class GJSolver {
 			solution.setElement(currRow, 0, (aMatrix.getElement(currRow, aMatrix.getCol() - 1)));
 
 			while (currCol < aMatrix.getCol() - 1) {
-				// solution.setElement(currRow, 0, (aMatrix.getElement(currRow, aMatrix.getCol() - 1)));
-				System.out.println("Current row: " + currRow + " Current col: " + currCol + " Current constant: " + aMatrix.getElement(currRow, currCol) + " Variable value: "+ solution.getElement(currCol, 0));
+				//System.out.println("Current row: " + currRow + " Current col: " + currCol + " Current constant: " + aMatrix.getElement(currRow, currCol) + " Variable value: "+ solution.getElement(currCol, 0));
 				solution.setElement(currRow, 0, ((-1) * aMatrix.getElement(currRow, currCol) * solution.getElement(currCol, 0) + solution.getElement(currRow, 0)));
-				System.out.println("Current variable value: " + solution.getElement(currRow, 0));
+				//System.out.println("Current variable value: " + solution.getElement(currRow, 0));
 				currCol++;
 			}
 
@@ -210,160 +102,225 @@ public class GJSolver {
 	public Matrix getEchelon(Matrix mx) {
 		Matrix tempMatrix = new Matrix(mx);
 
-		int leadingOne = 0;
 		int currRow = 0;
 		int currCol = 0;
 
-		while ((currRow < tempMatrix.getCol() - 1) && (leadingOne < tempMatrix.getCol() - 1) && (currRow < tempMatrix.getRow())) {
+		while ((currRow < tempMatrix.getCol() - 1) && (currRow < tempMatrix.getRow())) {
 			while ((tempMatrix.getElement(currRow, currCol) == 0) && (currCol < tempMatrix.getCol() - 1)) {
 				currCol++;
 			}
 
-			for (int j = currRow + 1; j < tempMatrix.getRow(); j++) {
-				if (Math.abs(tempMatrix.getElement(currRow, currCol)) < Math.abs(tempMatrix.getElement(j, currCol))) {
-					OBE.getInstance().swapRow(tempMatrix, currRow + 1, j + 1);
+			if (currCol < tempMatrix.getCol() - 1) {
+				for (int j = currRow + 1; j < tempMatrix.getRow(); j++) {
+					if (Math.abs(tempMatrix.getElement(currRow, currCol)) < Math.abs(tempMatrix.getElement(j, currCol))) {
+						OBE.getInstance().swapRow(tempMatrix, currRow + 1, j + 1);
+					}
 				}
-			}
-			System.out.println ("Iteration " + currRow + ", pivoting");
-			tempMatrix.toString();
+				
+				System.out.println ("Iteration " + currRow + ", pivoting");
+				tempMatrix.toString();
 
-			currCol++;
-			
-			while (tempMatrix.getElement(leadingOne, leadingOne) == 0) {
-				leadingOne++;
-			}
-			
-			OBE.getInstance().divideRow(tempMatrix, currRow + 1, tempMatrix.getElement(currRow, leadingOne));
+				OBE.getInstance().divideRow(tempMatrix, currRow + 1, tempMatrix.getElement(currRow, currCol));
 
-			for (int j = currRow + 1; j < tempMatrix.getRow(); j++) {
-				OBE.getInstance().substractRow(tempMatrix, j + 1, currRow + 1, tempMatrix.getElement(j, leadingOne));
+				for (int j = currRow + 1; j < tempMatrix.getRow(); j++) {
+					OBE.getInstance().substractRow(tempMatrix, j + 1, currRow + 1, tempMatrix.getElement(j, currCol));
+				}
+			} else {
+				System.out.println("Tak bisa diproses");
 			}
 
 			System.out.println ("Iteration " + currRow + ", partial echelon");
 			tempMatrix.toString();
-			leadingOne++;
 			currRow++;
+			System.out.println();
 		}
 
 		return tempMatrix;
 	}
 
-	private Matrix getReducedEchelon(Matrix mx) {
-		Matrix tempMatrix = new Matrix(getEchelon(mx));
-                
-                int rowPengurang = tempMatrix.getRow()-1; //row yg d jadikan pengurang (diambil row 3 dlu, krn row 3 leading one ada d paling ujung kanan).
-                int colPengurang = 0;
-                                        
-                while(rowPengurang != 0)
-                {
-                    while(tempMatrix.getElement(rowPengurang,colPengurang) != 1 && colPengurang <= tempMatrix.getCol()-2)
-                    {colPengurang++;}
-                    
-                    if(tempMatrix.getElement(rowPengurang,colPengurang) == 1)
-                    {
-                        for(int i = 0; i < rowPengurang; i++)
-                        {
-                            
-                                if(tempMatrix.getElement(i,colPengurang) != 0)
-                                {
-                                    OBE.getInstance().substractRow(tempMatrix, i+1, rowPengurang+1, tempMatrix.getElement(i,colPengurang));
-                                }
-                            
-                        }
-                    }
-                        
-                    rowPengurang--;
-                    colPengurang = 0;
-                }
-                
-                
+	public Matrix getReducedEchelon(Matrix mx) {
+		Matrix tempMatrix = new Matrix(mx);
+
+		int currRow = 0;
+		int currCol = 0;
+
+		while ((currRow < tempMatrix.getCol() - 1) && (currRow < tempMatrix.getRow())) {
+			while ((tempMatrix.getElement(currRow, currCol) == 0) && (currCol < tempMatrix.getCol() - 1)) {
+				currCol++;
+			}
+
+			if (currCol < tempMatrix.getCol() - 1) {
+				for (int j = currRow + 1; j < tempMatrix.getRow(); j++) {
+					if (Math.abs(tempMatrix.getElement(currRow, currCol)) < Math.abs(tempMatrix.getElement(j, currCol))) {
+						OBE.getInstance().swapRow(tempMatrix, currRow + 1, j + 1);
+					}
+				}
+				
+				System.out.println ("Iteration " + currRow + ", pivoting");
+				tempMatrix.toString();
+
+				OBE.getInstance().divideRow(tempMatrix, currRow + 1, tempMatrix.getElement(currRow, currCol));
+
+				for (int j = 0; j < tempMatrix.getRow(); j++) {
+					if (j != currRow){
+						OBE.getInstance().substractRow(tempMatrix, j + 1, currRow + 1, tempMatrix.getElement(j, currCol));
+					}
+				}
+			} else {
+				System.out.println("Tak bisa diproses");
+			}
+
+			System.out.println ("Iteration " + currRow + ", partial echelon");
+			tempMatrix.toString();
+			currRow++;
+			System.out.println();
+		}
+
 		return tempMatrix;
+	}
+
+	private Matrix backSub(Matrix mx) {
+		if (!solutionExists(mx)) {
+			System.out.println();
+			System.out.println("Tidak ada solusi");
+			System.out.println();
+			return (new LESSolution(1));
+		}
+
+		if (!checkIfUnique(mx)) {
+			LESSolution tempResult = new LESSolution(mx.getCol() - 1);
+
+			System.out.println();
+			System.out.println("Memulai multisolution procedure");
+			System.out.println();
+			for (int i = 0; i < mx.getRow(); i++) {
+				tempResult.setElement(i, multiSolutionBuilder(mx.getRowSet(i)));
+			}
+
+			// System.out.println("Solusi sebelum diproses: ");
+			// tempResult.toString();
+
+			for (int i = tempResult.getRow() - 2; i >= 0; i--) {
+				int bufferSize = tempResult.getElement(i).size();
+				ArrayList<OperandPair> loc = new ArrayList<>();
+
+				for (int j = 0; j < bufferSize; j++) {
+					if (!Objects.equals(tempResult.getElement(i).get(j).getVar(), "")) {
+						loc.add(new OperandPair(tempResult.getElement(i).get(j)));
+						
+						ArrayList<OperandPair> subHolder = new ArrayList<>();
+						for (int l = 0; l < tempResult.getElement(((int) tempResult.getElement(i).get(j).getVar().charAt(0)) - 97).size(); l++) {
+							subHolder.add(tempResult.getElement(i).get(j).subtitute(tempResult.getElement(((int) tempResult.getElement(i).get(j).getVar().charAt(0)) - 97)).get(l));
+						} 
+
+						for (int k = 0; k < subHolder.size(); k++) {
+							tempResult.getElement(i).add(new OperandPair(subHolder.get(k)));
+						}
+					}
+				}
+
+				for (int j = 0; j < loc.size(); j++) {
+					// System.out.println(loc.get(j);
+					tempResult.getElement(i).remove(loc.get(j));
+				}
+
+				// System.out.println();
+			}
+			// System.out.println("Solusi setelah disubstitusi: ");
+			// tempResult.toString();
+
+			tempResult.addSameVar();
+			// System.out.println("Solusi setelah dijumlah: ");
+			// tempResult.toString();
+
+			return tempResult;
+		} else {
+			System.out.println();
+			System.out.println("Memulai uniquesolution procedure");
+			System.out.println();
+			return uniqueSolutionBuilder(mx);
+
+		}
 	}
 
 	public Matrix GaussElim(Matrix mx) {
 		Matrix tempMatrix = new Matrix(getEchelon(mx));
-
-		if (!solutionExists(tempMatrix)) {
-			System.out.println("Tidak ada solusi");
-			return (new LESSolution(1));
-		}
-
-		if (!checkIfUnique(tempMatrix)) {
-			LESSolution tempResult = new LESSolution(mx.getCol() - 1);
-
-			for (int i = 0; i < tempMatrix.getRow(); i++) {
-				tempResult.setElement(i, multiSolutionBuilder(tempMatrix.getRowSet(i)));
-			}
-
-			//multiSolutionSubstituter(tempResult);
-			return tempResult;
-		} else {
-			return uniqueSolutionBuilder(tempMatrix);
-
-		}
+		return backSub(tempMatrix);		
 	}
 
 	public Matrix GaussJordan(Matrix mx) {
 		Matrix tempMatrix = new Matrix(getReducedEchelon(mx));
-		return tempMatrix;
+		return backSub(tempMatrix);
 	}
         
         public static void lagrangeInterpolasi()
         {
-            Scanner in = new Scanner(System.in);
-            System.out.print("Banyak data : ");
-            int N = in.nextInt();
-            Double[] nilaiX = new Double[N];
-            Double[] nilaiY = new Double[N];
             
-            for(int i=0; i<N; i++)
-            {
-               System.out.print("X"+(i+1)+" = ");
-               nilaiX[i]=in.nextDouble();
-               System.out.print("Y"+(i+1)+" = ");
-               nilaiY[i]=in.nextDouble();
-            }
+           Scanner myScanner = new Scanner(System.in);
+           int n; //Banyak angkanya
+           int count, count2; //penghitung loop
+           float numerator; //The numerator
+           float denominator;  //The denominator
+    
+           //Promt a user to enter a value
+            System.out.print("Banyak data: ");
+            n = myScanner.nextInt(); //Store the value in n
+            float [] arrayx = new float[n]; 
+            float [] arrayy = new float[n]; 
             
-            System.out.println("Nilai x dan y yang diketahui:");
-            for (int i = 0; i < nilaiX.length; i++) 
+           //Promt user to enter the array for X
+            System.out.println("Isi nilai dalam X[i] : ");
+            
+            for(count = 0; count<n; count++) //Start the loop for X
             {
-                System.out.println("x = " + nilaiX[i] + " ,\t y = " + nilaiY[i]);
+                 //Promp the user to enter the sequel for xi
+                System.out.print("X[" + (count+1) + "]: ");
+                //Store the sequel in the Array, arrayx
+                arrayx[count] = myScanner.nextFloat();
             }
+            //Promt user to enter the array for Y
+            System.out.println("Isi nilai dalam Y[i] : ");
+            for(count = 0; count<n; count++) // loop for Y
+            {
+                //Promp the user to enter the sequel for yi
+                System.out.print("Y[" + (count+1) + "]: ");
+                //Store the sequel in the Array, arrayy
+                arrayy[count] = myScanner.nextFloat();
+            }
+            int derajatPolinom = arrayx.length - 1;
+            //Promp the user to enter any (the arbitray)
+            //value x to get the corresponding value of y
             int input = 1;
             while(input != 0)
             {
-                System.out.println("Masukan nilai x yang ingin dicari f(x)nya:");
-                double x = in.nextDouble();
-                BigDecimal titikX = BigDecimal.valueOf(x);
-                int derajatPolinom = nilaiX.length - 1;
-                int tingkatKetelitian = 1; //kalau 1, 10^-9. kalau 2, 10^-12. kalau 3, 10^-15
-            
-                BigDecimal lagrange = new BigDecimal("0");
-                for (int i = 0; i <= derajatPolinom; i++) 
+            float x = 0;
+            float y = 0;
+            System.out.print("Isi nilai x yang ingin dicari f(x)nya: ");
+            x = myScanner.nextFloat();  //Store the value in x
+             
+            //first Loop for the polynomial calculation
+            for(count = 0; count<n; count++)
+            {
+                 //Initialisation of variable
+                numerator = 1; denominator = 1;
+                 
+                //second Loop for the polynomial calculation
+                for(count2 = 0; count2<n; count2++)
                 {
-                    BigDecimal pi = new BigDecimal("1");
-                    for (int j = 0; j <= derajatPolinom; j++) 
+                    if (count2 != count)
                     {
-                        if (i != j) 
-                        {
-                            pi = pi.multiply((titikX.subtract(BigDecimal
-                                    .valueOf(nilaiX[j]))).divide(
-                                BigDecimal.valueOf(nilaiX[i]).subtract(
-                                        BigDecimal.valueOf(nilaiX[j])),
-                                tingkatKetelitian, RoundingMode.HALF_EVEN));
-                        }
-                    }
-                    lagrange = lagrange.add(pi.multiply(BigDecimal.valueOf(nilaiY[i])));
+                      numerator = numerator * (x - arrayx[count2]);
+                      denominator = denominator * (arrayx[count] - arrayx[count2]);
+                    } 
                 }
-            // Tamplkan hasil Interpolasi
+                y = y + (numerator/denominator) * arrayy[count];
+            }
             System.out.println("Derajat polinom = " + derajatPolinom);
-            System.out.println("Hitung nilai y pada titik x = " + titikX + "!");
-            System.out.println("------------------------------------------------\n");
-            System.out.println("Hasil Interpolasi pada titik x = " + titikX + " adalah " + lagrange);
-        
-            System.out.println("Masih ada data? (0/1)");
-                    input = in.nextInt();
-        }}
+            System.out.println("XHasil Interpolasi pada titik x = " + x + " adalah " +  y);
+            System.out.println("Input lagi? (0/1)");
+            input = myScanner.nextInt();
+            }
+        }
                
 	public static void main (String[] args) {
 		/*Matrix mx = new Matrix("myMatrix3.txt");
@@ -371,13 +328,20 @@ public class GJSolver {
                 
 		System.out.println(new LESSolution(10).getRow());
 		System.out.println("Original:" + (mx.getCol() - 1));
+		Matrix mx = new Matrix("myMatrix2.txt");
+
+		System.out.println("Original:");
 		mx.toString();
+		System.out.println();
 
 		System.out.println("Echelon form:");
-		System.out.println(GJSolver.getInstance().GaussElim(mx).toString());
+
+		System.out.println();
+		GJSolver.getInstance().GaussElim(mx).toString();
+		GJSolver.getInstance().GaussJordan(mx).toString();
                 
-                System.out.println("Echelon reduced form:");
-		System.out.println(GJSolver.getInstance().GaussJordan(mx).toString());
+		// System.out.println("Echelon reduced form:");
+		// System.out.println(GJSolver.getInstance().GaussJordan(mx).toString());
 		// System.out.println(GJSolver.getInstance().GaussElim(mx).getRow());
 		// GJSolver.getInstance().GaussElim(mx).getRow();
 		// GJSolver.getInstance().multiSolutionSubstituter(4, "(0.71)d + (0.53)c + (0.53)b");*/
