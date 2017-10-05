@@ -251,8 +251,43 @@ public class GJSolver {
 		return backSub(tempMatrix);
 	}
 
+	public Matrix interpolate(Matrix data) {
+		if (data.getCol() != 2) {
+			System.out.println("Wrong data format");
+			return (new Matrix());
+		} else {
+			Matrix interpolation = new Matrix (data.getRow(), data.getRow() + 1);
+			for (int i = 0; i < interpolation.getRow(); i++) {
+				for (int j = 0; j < interpolation.getCol(); j++) {
+					interpolation.setElement(i, j, Math.pow(data.getElement(i,0), j));
+
+					if (j == interpolation.getCol() - 1) {
+						interpolation.setElement(i, j, data.getElement(i,1));
+						
+					}
+				}
+
+			}
+
+			return GaussElim(interpolation);
+		}
+	}
+
+	public double estimate(double x, Matrix mx) {
+		Matrix interpolation = new Matrix(interpolate(mx));
+		double y = 0;
+
+		for (int i = 0; i < interpolation.getCol(); i++) {
+			for (int j = 0; j < interpolation.getRow(); j++) {
+				y += Math.pow(x, j) * interpolation.getElement(j, i);
+			}
+		}
+
+		return y;
+	}
+
 	public static void main (String[] args) {
-		Matrix mx = new Matrix("myMatrix2.txt");
+		Matrix mx = new Matrix("soal_f.txt");
 
 		System.out.println("Original:");
 		mx.toString();
@@ -261,8 +296,10 @@ public class GJSolver {
 		System.out.println("Echelon form:");
 
 		System.out.println();
-		GJSolver.getInstance().GaussElim(mx).toString();
-		GJSolver.getInstance().GaussJordan(mx).toString();
+		System.out.println(GJSolver.getInstance().estimate(1.28, mx));
+		// GJSolver.getInstance().GaussElim(mx).toString();
+		// GJSolver.getInstance().GaussJordan(mx).toString();
+		// GJSolver.getInstance().interpolate(mx).toString();
                 
 		// System.out.println("Echelon reduced form:");
 		// System.out.println(GJSolver.getInstance().GaussJordan(mx).toString());
