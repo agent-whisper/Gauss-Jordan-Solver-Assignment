@@ -249,11 +249,17 @@ public class GJSolver {
 
 	public Matrix GaussElim(Matrix mx) {
 		Matrix tempMatrix = new Matrix(getEchelon(mx));
+
+		System.out.format("\nMatriks Echelon:\n");
+		tempMatrix.toString();
 		return backSub(tempMatrix);		
 	}
 
 	public Matrix GaussJordan(Matrix mx) {
 		Matrix tempMatrix = new Matrix(getReducedEchelon(mx));
+
+		System.out.format("\nMatriks Echelon Tereduksi:\n");
+		tempMatrix.toString();
 		return backSub(tempMatrix);
 	}
 
