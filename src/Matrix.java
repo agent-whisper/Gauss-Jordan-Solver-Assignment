@@ -136,7 +136,7 @@ public class Matrix {
     public void fill() {
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
-                System.out.format("Element (%.2f, %.2f): ", i + 1, j + 1);
+                System.out.format("Element (%.2f, %.2f): ", (double) i + 1, (double) j + 1);
                 setElement(i, j, input.nextDouble());
             }
         }

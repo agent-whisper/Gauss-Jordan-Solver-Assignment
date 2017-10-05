@@ -60,6 +60,6 @@ public class OperandPair {
 		}
 
 		public String toString() {
-			return (coefficient + var);
+			return (String.format("%3.4f%s", coefficient, var));
 		}
 	}

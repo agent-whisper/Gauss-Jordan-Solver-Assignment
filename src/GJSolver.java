@@ -117,8 +117,8 @@ public class GJSolver {
 					}
 				}
 				
-				System.out.println ("Iteration " + currRow + ", pivoting");
-				tempMatrix.toString();
+				// System.out.println ("Iteration " + currRow + ", pivoting");
+				// tempMatrix.toString();
 
 				OBE.getInstance().divideRow(tempMatrix, currRow + 1, tempMatrix.getElement(currRow, currCol));
 
@@ -129,10 +129,10 @@ public class GJSolver {
 				System.out.println("Tak bisa diproses");
 			}
 
-			System.out.println ("Iteration " + currRow + ", partial echelon");
-			tempMatrix.toString();
+			// System.out.println ("Iteration " + currRow + ", partial echelon");
+			// tempMatrix.toString();
 			currRow++;
-			System.out.println();
+			// System.out.println();
 		}
 
 		return tempMatrix;
@@ -156,8 +156,9 @@ public class GJSolver {
 					}
 				}
 				
-				System.out.println ("Iteration " + currRow + ", pivoting");
-				tempMatrix.toString();
+				// System.out.println ("Iteration " + currRow + ", pivoting");
+				// System.out.println ();
+				// tempMatrix.toString();
 
 				OBE.getInstance().divideRow(tempMatrix, currRow + 1, tempMatrix.getElement(currRow, currCol));
 
@@ -170,10 +171,13 @@ public class GJSolver {
 				System.out.println("Tak bisa diproses");
 			}
 
-			System.out.println ("Iteration " + currRow + ", partial echelon");
-			tempMatrix.toString();
+			// System.out.println ("Iteration " + currRow + ", partial echelon");
+			// tempMatrix.toString();
+			// System.out.println ();
+			// System.out.println ();
+
 			currRow++;
-			System.out.println();
+			// System.out.println();
 		}
 
 		return tempMatrix;
@@ -190,9 +194,9 @@ public class GJSolver {
 		if (!checkIfUnique(mx)) {
 			LESSolution tempResult = new LESSolution(mx.getCol() - 1);
 
-			System.out.println();
-			System.out.println("Memulai multisolution procedure");
-			System.out.println();
+			// System.out.println();
+			// // System.out.println("Memulai multisolution procedure");
+			// System.out.println();
 			for (int i = 0; i < mx.getRow(); i++) {
 				tempResult.setElement(i, multiSolutionBuilder(mx.getRowSet(i)));
 			}
@@ -233,11 +237,11 @@ public class GJSolver {
 			// System.out.println("Solusi setelah dijumlah: ");
 			// tempResult.toString();
 
-			return tempResult;
+			return new LESSolution(tempResult);
 		} else {
-			System.out.println();
-			System.out.println("Memulai uniquesolution procedure");
-			System.out.println();
+			// System.out.println();
+			// // System.out.println("Memulai uniquesolution procedure");
+			// System.out.println();
 			return uniqueSolutionBuilder(mx);
 
 		}
@@ -252,7 +256,7 @@ public class GJSolver {
 		Matrix tempMatrix = new Matrix(getReducedEchelon(mx));
 		return backSub(tempMatrix);
 	}
-	
+
 	public Matrix interpolate(Matrix data) {
 		if (data.getCol() != 2) {
 			System.out.println("Wrong data format");
@@ -375,7 +379,7 @@ public class GJSolver {
 		System.out.println("Echelon form:");
 
 		System.out.println();
-		System.out.println(GJSolver.getInstance().estimate(1, mx));
+		System.out.println(GJSolver.getInstance().estimate(0.2, mx));
 		// GJSolver.getInstance().GaussElim(mx).toString();
 		// GJSolver.getInstance().GaussJordan(mx).toString();
 		// GJSolver.getInstance().interpolate(mx).toString();
