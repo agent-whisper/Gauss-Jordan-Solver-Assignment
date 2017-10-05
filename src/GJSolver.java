@@ -170,8 +170,8 @@ public class GJSolver {
 				}
 			}
 
-			System.out.println ("Iteration " + currRow);
-			tempMatrix.toString();
+			// System.out.println ("Iteration " + currRow);
+			// tempMatrix.toString();
 			// System.out.println ();
 			// System.out.println ();
 
