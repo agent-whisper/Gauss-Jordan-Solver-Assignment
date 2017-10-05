@@ -308,54 +308,65 @@ public class GJSolver {
 		return tempMatrix;
 	}
         
-        public void interpolasi_linier()
+        public static void lagrangeInterpolasi()
         {
-             Scanner in = new Scanner(System.in);
-          System.out.print("Banyak data : ");
-          int N = in.nextInt();
-          double dataX[] = new double[N];
-          double dataY[] = new double[N];
-          //input data x & y
-          for(int i=0; i<N; i++){
+            Scanner in = new Scanner(System.in);
+            System.out.print("Banyak data : ");
+            int N = in.nextInt();
+            Double[] nilaiX = new Double[N];
+            Double[] nilaiY = new Double[N];
+            
+            for(int i=0; i<N; i++)
+            {
                System.out.print("X"+(i+1)+" = ");
-               dataX[i]=in.nextDouble();
+               nilaiX[i]=in.nextDouble();
                System.out.print("Y"+(i+1)+" = ");
-               dataY[i]=in.nextDouble();
-          }
-          //mencetak data x & y
-          System.out.print("\tX |");
-          for(int i=0; i<N; i++){
-               System.out.print(" "+dataX[i]+" |");
-          }
-          System.out.print("\n\tY |");
-               for(int i=0; i<N; i++){
-               System.out.print(" "+dataY[i]+" |");
-          }
-          //yang dicari
-          System.out.println();
-          System.out.print("\nTentukan Nilai X = ");
-          double x=in.nextDouble();
-          double x1=0,x2=0,y1=0,y2=0;
-          //penyeleksian
-          for(int i=0; i<N-1; i++){
-               if(x>dataX[i] && x<dataX[i+1]){
-               x1=dataX[i];
-               x2=dataX[i+1];
-               y1=dataY[i];
-               y2=dataY[i+1];
-               }
-          }
-          System.out.println("x1 = "+x1);
-          System.out.println("x2 = "+x2);
-          System.out.println("y1 = "+y1);
-          System.out.println("y2 = "+y2);
-          double y=y1+((y2-y1)/(x2-x1))*(x-x1);
-          System.out.println("Titik terbaru adalah P3("+x+","+y+")");
-        }
+               nilaiY[i]=in.nextDouble();
+            }
+            
+            System.out.println("Nilai x dan y yang diketahui:");
+            for (int i = 0; i < nilaiX.length; i++) 
+            {
+                System.out.println("x = " + nilaiX[i] + " ,\t y = " + nilaiY[i]);
+            }
+            int input = 1;
+            while(input != 0)
+            {
+                System.out.println("Masukan nilai x yang ingin dicari f(x)nya:");
+                double x = in.nextDouble();
+                BigDecimal titikX = BigDecimal.valueOf(x);
+                int derajatPolinom = nilaiX.length - 1;
+                int tingkatKetelitian = 1; //kalau 1, 10^-9. kalau 2, 10^-12. kalau 3, 10^-15
+            
+                BigDecimal lagrange = new BigDecimal("0");
+                for (int i = 0; i <= derajatPolinom; i++) 
+                {
+                    BigDecimal pi = new BigDecimal("1");
+                    for (int j = 0; j <= derajatPolinom; j++) 
+                    {
+                        if (i != j) 
+                        {
+                            pi = pi.multiply((titikX.subtract(BigDecimal
+                                    .valueOf(nilaiX[j]))).divide(
+                                BigDecimal.valueOf(nilaiX[i]).subtract(
+                                        BigDecimal.valueOf(nilaiX[j])),
+                                tingkatKetelitian, RoundingMode.HALF_EVEN));
+                        }
+                    }
+                    lagrange = lagrange.add(pi.multiply(BigDecimal.valueOf(nilaiY[i])));
+                }
+            // Tamplkan hasil Interpolasi
+            System.out.println("Derajat polinom = " + derajatPolinom);
+            System.out.println("Hitung nilai y pada titik x = " + titikX + "!");
+            System.out.println("------------------------------------------------\n");
+            System.out.println("Hasil Interpolasi pada titik x = " + titikX + " adalah " + lagrange);
         
-                
+            System.out.println("Masih ada data? (0/1)");
+                    input = in.nextInt();
+        }}
+               
 	public static void main (String[] args) {
-		Matrix mx = new Matrix("myMatrix3.txt");
+		/*Matrix mx = new Matrix("myMatrix3.txt");
                 
                 
 		System.out.println(new LESSolution(10).getRow());
@@ -369,6 +380,8 @@ public class GJSolver {
 		System.out.println(GJSolver.getInstance().GaussJordan(mx).toString());
 		// System.out.println(GJSolver.getInstance().GaussElim(mx).getRow());
 		// GJSolver.getInstance().GaussElim(mx).getRow();
-		// GJSolver.getInstance().multiSolutionSubstituter(4, "(0.71)d + (0.53)c + (0.53)b");
+		// GJSolver.getInstance().multiSolutionSubstituter(4, "(0.71)d + (0.53)c + (0.53)b");*/
+                lagrangeInterpolasi();
+                
 	}
 }
