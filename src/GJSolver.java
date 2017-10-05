@@ -68,11 +68,11 @@ public class GJSolver {
 		for (int i = aRow.length - 1; i > currCol; i--) {
 			double num = ((i < aRow.length - 1) ? (-1) : 1) * (aRow[i] / aRow[currCol]);
 			if (num != 0) {
-				result.add(new OperandPair(num, ((i < aRow.length - 1 ) ? "" + ((char) (97 + i) + " ") : "")));
+				result.add(new OperandPair(num, ((i < aRow.length - 1 ) ? "" + ((char) (97 + i)) : "")));
 				//tempStr = tempStr + String.format("%.2f", num) + ((i < aRow.length - 1 ) ? " " + ((char) (97 + i) + " * ") : "") + ((i > currCol + 1) ? " + ": "");
 			}
 
-		}		
+		}
 
 		return result;
 	}
@@ -129,8 +129,8 @@ public class GJSolver {
 				System.out.println("Tak bisa diproses");
 			}
 
-			// System.out.println ("Iteration " + currRow + ", partial echelon");
-			// tempMatrix.toString();
+			System.out.println ("Iteration " + currRow);
+			tempMatrix.toString();
 			currRow++;
 			// System.out.println();
 		}
@@ -145,6 +145,7 @@ public class GJSolver {
 		int currCol = 0;
 
 		while ((currRow < tempMatrix.getCol() - 1) && (currRow < tempMatrix.getRow())) {
+			currCol = 0;
 			while ((tempMatrix.getElement(currRow, currCol) == 0) && (currCol < tempMatrix.getCol() - 1)) {
 				currCol++;
 			}
@@ -167,12 +168,10 @@ public class GJSolver {
 						OBE.getInstance().substractRow(tempMatrix, j + 1, currRow + 1, tempMatrix.getElement(j, currCol));
 					}
 				}
-			} else {
-				System.out.println("Tak bisa diproses");
 			}
 
-			// System.out.println ("Iteration " + currRow + ", partial echelon");
-			// tempMatrix.toString();
+			System.out.println ("Iteration " + currRow);
+			tempMatrix.toString();
 			// System.out.println ();
 			// System.out.println ();
 
@@ -181,6 +180,26 @@ public class GJSolver {
 		}
 
 		return tempMatrix;
+	}
+
+	private boolean isZeroRow(double[] aRow) {
+		for (int i = 0; i < aRow.length; i++) {
+			if (aRow[i] != 0) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	private int findLeadIdx(double[] aRow) {
+		for (int i = 0; i < aRow.length; i++) {
+			if (aRow[i] != 0) {
+				return i;
+			}
+		}
+
+		return aRow.length - 1;
 	}
 
 	private Matrix backSub(Matrix mx) {
@@ -193,18 +212,19 @@ public class GJSolver {
 
 		if (!checkIfUnique(mx)) {
 			LESSolution tempResult = new LESSolution(mx.getCol() - 1);
-
 			// System.out.println();
 			// // System.out.println("Memulai multisolution procedure");
 			// System.out.println();
 			for (int i = 0; i < mx.getRow(); i++) {
-				tempResult.setElement(i, multiSolutionBuilder(mx.getRowSet(i)));
+				if (!isZeroRow(mx.getRowSet(i))) {
+					tempResult.setElement(findLeadIdx(mx.getRowSet(i)), multiSolutionBuilder(mx.getRowSet(i)));
+				}
 			}
 
 			// System.out.println("Solusi sebelum diproses: ");
 			// tempResult.toString();
 
-			for (int i = tempResult.getRow() - 2; i >= 0; i--) {
+			for (int i = tempResult.getRow() - 1; i >= 0; i--) {
 				int bufferSize = tempResult.getElement(i).size();
 				ArrayList<OperandPair> loc = new ArrayList<>();
 

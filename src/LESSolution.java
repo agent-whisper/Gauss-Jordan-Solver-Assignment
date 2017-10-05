@@ -45,7 +45,7 @@ public class LESSolution extends Matrix {
 		expression[row].clear();
 
 		for (int i = 0; i < val.size(); i++) {
-			expression[row].add(val.get(i));
+			expression[row].add(new OperandPair(val.get(i)));
 		}
 	}
 
@@ -88,23 +88,24 @@ public class LESSolution extends Matrix {
 	}
 
 	public String toString() {
-		for (int i = 0; i < this.row; i++) {
+		for (int i = 0; i < expression.length; i++) {
 			System.out.format("%3c =", (char) (97 + i));
             for (int j = 0; j < expression[i].size(); j++) {
             	System.out.format(" %.4f %s ", expression[i].get(j).getCoefficient(), expression[i].get(j).getVar());
-            	if (j >= expression[i].size() - 1) {
-                    System.out.format("\n");
-            	}
-                else {
+            	// if (j >= expression[i].size() - 1) {
+             //        System.out.format("\n");
+            	// }
+             //    else {
                     System.out.format("+");
-                }
+                // }
             }
+            System.out.println();
         }
         return "";
 	}
 
 	public static void main(String[] args) {
-		LESSolution test = new LESSolution(4);
+		LESSolution test = new LESSolution(5);
 		test.toString();
 	}
 }
