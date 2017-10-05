@@ -129,8 +129,8 @@ public class GJSolver {
 				System.out.println("Tak bisa diproses");
 			}
 
-			System.out.println ("Iteration " + currRow);
-			tempMatrix.toString();
+			// System.out.println ("Iteration " + currRow);
+			// tempMatrix.toString();
 			currRow++;
 			// System.out.println();
 		}
