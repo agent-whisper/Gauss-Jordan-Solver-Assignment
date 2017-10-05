@@ -296,7 +296,7 @@ public class GJSolver {
 		System.out.println("Echelon form:");
 
 		System.out.println();
-		System.out.println(GJSolver.getInstance().estimate(1.28, mx));
+		System.out.println(GJSolver.getInstance().estimate(1, mx));
 		// GJSolver.getInstance().GaussElim(mx).toString();
 		// GJSolver.getInstance().GaussJordan(mx).toString();
 		// GJSolver.getInstance().interpolate(mx).toString();
