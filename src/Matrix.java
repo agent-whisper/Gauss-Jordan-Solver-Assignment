@@ -172,7 +172,7 @@ public class Matrix {
 
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
-                System.out.format("%5.2f", element[i][j]);
+                System.out.format("%5.4f", element[i][j]);
 
                 if (j < (col - 1)) {
                     System.out.print(" ");

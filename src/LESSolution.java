@@ -55,7 +55,7 @@ public class LESSolution extends Matrix {
             System.out.format("%3c = ", (char)(97 + i));
             
         	for (int j = 0; j < expression[i].size(); j++) {
-            	System.out.format("%.2f %s %s", expression[i].get(j).getCoefficient(), expression[i].get(j).getVar(), (j == expression[i].size() - 1 ? "" : "+ "));
+            	System.out.format("%.4f %s %s", expression[i].get(j).getCoefficient(), expression[i].get(j).getVar(), (j == expression[i].size() - 1 ? "" : "+ "));
         	}
         	System.out.println();
         }
