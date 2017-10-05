@@ -252,8 +252,7 @@ public class GJSolver {
 		Matrix tempMatrix = new Matrix(getReducedEchelon(mx));
 		return backSub(tempMatrix);
 	}
-<<<<<<< HEAD
-
+	
 	public Matrix interpolate(Matrix data) {
 		if (data.getCol() != 2) {
 			System.out.println("Wrong data format");
@@ -386,7 +385,7 @@ public class GJSolver {
 		// System.out.println(GJSolver.getInstance().GaussElim(mx).getRow());
 		// GJSolver.getInstance().GaussElim(mx).getRow();
 		// GJSolver.getInstance().multiSolutionSubstituter(4, "(0.71)d + (0.53)c + (0.53)b");*/
-                lagrangeInterpolasi();
+                // lagrangeInterpolasi();
                 
 	}
 }
