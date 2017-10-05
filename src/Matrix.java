@@ -3,6 +3,11 @@ import java.text.NumberFormat;
 import java.io.*;
 
 public class Matrix {
+    //Variabel
+    private double[][] element;
+    private final int row;
+    private final int col;
+    private Scanner input = new Scanner (System.in);
     
     //Konstruktor
     public Matrix(String fileDir) {
@@ -159,12 +164,6 @@ public class Matrix {
             System.out.println("Error in saving file!");
         }
     }
-
-    //Variabel
-    private double[][] element;
-    private final int row;
-    private final int col;
-    private Scanner input = new Scanner (System.in);
 
     //toString
     public String toString() {

@@ -77,16 +77,6 @@ public class LESSolution extends Matrix {
 		}
 	}
 
-	// public String toString() {
- //        String tempStr = "";
-
- //        for (int i = 0; i < row; i++) {
- //            System.out.println(element[i]);
- //        }
-
- //        return tempStr;
- //    }
-
 	public static void main(String[] args) {
 		LESSolution test = new LESSolution(4);
 		test.toString();

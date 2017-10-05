@@ -136,37 +136,7 @@ public class GJSolver {
 		return tempMatrix;
 	}
 
-	private Matrix getReducedEchelon(Matrix mx) {
-		// Matrix tempMatrix = new Matrix(getEchelon(mx));
-                
-  //               int rowPengurang = tempMatrix.getRow()-1; //row yg d jadikan pengurang (diambil row 3 dlu, krn row 3 leading one ada d paling ujung kanan).
-  //               int colPengurang = 0;
-                                        
-  //               while(rowPengurang != 0)
-  //               {
-  //                   while(tempMatrix.getElement(rowPengurang,colPengurang) != 1 && colPengurang <= tempMatrix.getCol()-2)
-  //                   {colPengurang++;}
-                    
-  //                   if(tempMatrix.getElement(rowPengurang,colPengurang) == 1)
-  //                   {
-  //                       for(int i = 0; i < rowPengurang; i++)
-  //                       {
-                            
-  //                               if(tempMatrix.getElement(i,colPengurang) != 0)
-  //                               {
-  //                                   OBE.getInstance().substractRow(tempMatrix, i+1, rowPengurang+1, tempMatrix.getElement(i,colPengurang));
-  //                               }
-                            
-  //                       }
-  //                   }
-                        
-  //                   rowPengurang--;
-  //                   colPengurang = 0;
-  //               }
-                
-                
-		// return tempMatrix;
-
+	public Matrix getReducedEchelon(Matrix mx) {
 		Matrix tempMatrix = new Matrix(mx);
 
 		int currRow = 0;
