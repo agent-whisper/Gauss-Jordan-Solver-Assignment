@@ -110,6 +110,7 @@ public class GJSolver {
 				currCol++;
 			}
 
+			System.out.println(currRow + ", " + currCol);
 			if (currCol < tempMatrix.getCol() - 1) {
 				for (int j = currRow + 1; j < tempMatrix.getRow(); j++) {
 					if (Math.abs(tempMatrix.getElement(currRow, currCol)) < Math.abs(tempMatrix.getElement(j, currCol))) {
