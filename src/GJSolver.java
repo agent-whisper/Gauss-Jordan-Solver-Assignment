@@ -2,6 +2,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Objects;
 
 public class GJSolver {
@@ -250,6 +252,7 @@ public class GJSolver {
 		Matrix tempMatrix = new Matrix(getReducedEchelon(mx));
 		return backSub(tempMatrix);
 	}
+<<<<<<< HEAD
 
 	public Matrix interpolate(Matrix data) {
 		if (data.getCol() != 2) {
@@ -288,6 +291,83 @@ public class GJSolver {
 
 	public static void main (String[] args) {
 		Matrix mx = new Matrix("soal_f.txt");
+        
+ //        public static void lagrangeInterpolasi()
+ //        {
+            
+ //           Scanner myScanner = new Scanner(System.in);
+ //           int n; //Banyak angkanya
+ //           int count, count2; //penghitung loop
+ //           float numerator; //The numerator
+ //           float denominator;  //The denominator
+    
+ //           //Promt a user to enter a value
+ //            System.out.print("Banyak data: ");
+ //            n = myScanner.nextInt(); //Store the value in n
+ //            float [] arrayx = new float[n]; 
+ //            float [] arrayy = new float[n]; 
+            
+ //           //Promt user to enter the array for X
+ //            System.out.println("Isi nilai dalam X[i] : ");
+            
+ //            for(count = 0; count<n; count++) //Start the loop for X
+ //            {
+ //                 //Promp the user to enter the sequel for xi
+ //                System.out.print("X[" + (count+1) + "]: ");
+ //                //Store the sequel in the Array, arrayx
+ //                arrayx[count] = myScanner.nextFloat();
+ //            }
+ //            //Promt user to enter the array for Y
+ //            System.out.println("Isi nilai dalam Y[i] : ");
+ //            for(count = 0; count<n; count++) // loop for Y
+ //            {
+ //                //Promp the user to enter the sequel for yi
+ //                System.out.print("Y[" + (count+1) + "]: ");
+ //                //Store the sequel in the Array, arrayy
+ //                arrayy[count] = myScanner.nextFloat();
+ //            }
+ //            int derajatPolinom = arrayx.length - 1;
+ //            //Promp the user to enter any (the arbitray)
+ //            //value x to get the corresponding value of y
+ //            int input = 1;
+ //            while(input != 0)
+ //            {
+ //            float x = 0;
+ //            float y = 0;
+ //            System.out.print("Isi nilai x yang ingin dicari f(x)nya: ");
+ //            x = myScanner.nextFloat();  //Store the value in x
+             
+ //            //first Loop for the polynomial calculation
+ //            for(count = 0; count<n; count++)
+ //            {
+ //                 //Initialisation of variable
+ //                numerator = 1; denominator = 1;
+                 
+ //                //second Loop for the polynomial calculation
+ //                for(count2 = 0; count2<n; count2++)
+ //                {
+ //                    if (count2 != count)
+ //                    {
+ //                      numerator = numerator * (x - arrayx[count2]);
+ //                      denominator = denominator * (arrayx[count] - arrayx[count2]);
+ //                    } 
+ //                }
+ //                y = y + (numerator/denominator) * arrayy[count];
+ //            }
+ //            System.out.println("Derajat polinom = " + derajatPolinom);
+ //            System.out.println("XHasil Interpolasi pada titik x = " + x + " adalah " +  y);
+ //            System.out.println("Input lagi? (0/1)");
+ //            input = myScanner.nextInt();
+ //            }
+ //        }
+               
+	// public static void main (String[] args) {
+	// 	/*Matrix mx = new Matrix("myMatrix3.txt");
+                
+                
+	// 	System.out.println(new LESSolution(10).getRow());
+	// 	System.out.println("Original:" + (mx.getCol() - 1));
+	// 	Matrix mx = new Matrix("myMatrix2.txt");
 
 		System.out.println("Original:");
 		mx.toString();
@@ -305,6 +385,8 @@ public class GJSolver {
 		// System.out.println(GJSolver.getInstance().GaussJordan(mx).toString());
 		// System.out.println(GJSolver.getInstance().GaussElim(mx).getRow());
 		// GJSolver.getInstance().GaussElim(mx).getRow();
-		// GJSolver.getInstance().multiSolutionSubstituter(4, "(0.71)d + (0.53)c + (0.53)b");
+		// GJSolver.getInstance().multiSolutionSubstituter(4, "(0.71)d + (0.53)c + (0.53)b");*/
+                lagrangeInterpolasi();
+                
 	}
 }
